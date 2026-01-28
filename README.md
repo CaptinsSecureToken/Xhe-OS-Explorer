@@ -1,70 +1,241 @@
-# Getting Started with Create React App
+```md
+# Xhe-OS Explorer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Xhe-OS is a browser-resident operating system for identity, coordination, and value.**  
+This repository contains the **Explorer** — the human-facing console and shell for that OS.
 
-## Available Scripts
+Xhe-OS runs **entirely client-side**, with its kernel, memory, and primitives implemented in the browser using IndexedDB. There are **no servers**, **no APIs**, and **no trusted intermediaries**.
 
-In the project directory, you can run:
+If the browser is running, the OS exists.
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## What This Project Is
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Xhe-OS Explorer is **not a website** and **not a backend service**.
 
-### `npm test`
+It is:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- a **local-first operating system**
+- a **coordination kernel**
+- a **persistent runtime**
+- a **deterministic system**
+- a **sovereign environment**
 
-### `npm run build`
+The React app in this repo functions as the **system console / shell** for interacting with the kernel.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Core Architecture
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```
 
-### `npm run eject`
+Browser
+├── IndexedDB
+│   ├── identities   (persistent actors)
+│   ├── pulses       (immutable events)
+│   ├── slips        (value / trust transfers)
+│   └── channels     (coordination spaces)
+│
+├── Kernel
+│   ├── boot sequence
+│   ├── deterministic rules
+│   ├── domain primitives
+│   └── storage orchestration
+│
+└── Explorer UI
+├── identity console
+├── event feed
+├── value transfer surface
+├── channel browser
+└── system status
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+````
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Everything lives inside the browser.  
+Closing the tab does **not** destroy the system state.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## The Kernel
 
-## Learn More
+The kernel is a JavaScript module that:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- initializes IndexedDB
+- defines system primitives
+- enforces deterministic behavior
+- exposes a coordination API to the UI
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+If the kernel fails to initialize, **Xhe-OS does not exist**.
 
-### Code Splitting
+Kernel initialization happens on app startup:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```js
+await initializeKernel();
+````
 
-### Analyzing the Bundle Size
+This is a true boot sequence.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## System Primitives
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Xhe-OS is built around four core primitives.
 
-### Advanced Configuration
+### Identity
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Identities are persistent actors stored locally.
 
-### Deployment
+They:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+* exist independently of sessions
+* hold balances
+* emit pulses
+* send and receive slips
+* participate in channels
 
-### `npm run build` fails to minify
+There are no accounts, logins, or passwords — identity is a first-class system object.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+### Pulse
+
+Pulses are immutable events.
+
+They represent:
+
+* signals
+* declarations
+* state changes
+* messages
+
+Pulses are timestamped, identity-scoped, and permanently stored.
+The feed is an **event log**, not a social timeline.
+
+---
+
+### Slip
+
+Slips are transfers between identities.
+
+They model:
+
+* value
+* trust
+* obligation
+* credit
+
+Slips are persisted, auditable, and deterministic.
+They form the foundation for a local-first ledger.
+
+---
+
+### Channel
+
+Channels are shared coordination spaces.
+
+They:
+
+* group pulses
+* bind identities
+* scope activity
+* enable collective behavior
+
+Channels allow the OS to scale beyond a single identity.
+
+---
+
+## Explorer UI (This Repo)
+
+The Explorer provides:
+
+* Identity management
+* Pulse creation
+* Event feed viewing
+* Slip transfers
+* Channel browsing
+* Kernel status and diagnostics
+
+It is a **console**, not an application layer.
+
+---
+
+## Guarantees
+
+Xhe-OS provides the following guarantees:
+
+* **100% Client-Side**
+* **Persistent**
+* **Deterministic**
+* **Auditable**
+* **Local-First**
+* **No Servers**
+* **No Trust Required**
+
+If it runs, it runs on your machine.
+
+---
+
+## Tech Stack
+
+* React
+* IndexedDB
+* CRACO
+* Tailwind CSS
+* JavaScript (ES Modules)
+
+No backend.
+No database servers.
+No APIs.
+
+---
+
+## Running Locally
+
+```bash
+git clone https://github.com/CaptinsSecureToken/Xhe-OS-Explorer.git
+cd Xhe-OS-Explorer
+npm install
+npm start
+```
+
+The OS boots at:
+
+```
+http://localhost:3000
+```
+
+---
+
+## Build
+
+```bash
+npm run build
+```
+
+Produces a static, serverless bundle.
+
+The build can be hosted anywhere — or nowhere.
+
+---
+
+## What This Is Becoming
+
+Xhe-OS Explorer is designed to evolve into:
+
+* a distributed coordination OS
+* a peer-to-peer synced runtime
+* a sovereign computing substrate
+* a human-facing system layer for decentralized primitives
+
+This repo is the **shell**, not the limit.
+
+---
+
+## One-Line Definition
+
+**Xhe-OS is a browser-native operating system for identity, coordination, and value — with a kernel backed by IndexedDB and a React-based system console.**
+
+---
+
+```
